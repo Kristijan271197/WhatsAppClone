@@ -32,9 +32,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     // firebase
-    // podozdi
-    // idi na google v github
-    //idi na pochtu ja tebe snova dobavil,da horoso videl
+
     FirebaseUser firebaseUser;
     DatabaseReference myRef;
 
