@@ -8,7 +8,7 @@
     tools:context=".MessageActivity">
 
 
-    <android.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             app:layout_constraintEnd_toStartOf="@+id/imageview_profile"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </android.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/bottom"
@@ -55,16 +55,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/btn_send"
+            android:layout_toStartOf="@+id/btn_send"
             android:background="@android:color/transparent"
-            android:text="Type a message" />
+            android:hint="Type a message" />
 
         <ImageButton
             android:id="@+id/btn_send"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:background="@drawable/ic_send" />
 
 
@@ -72,9 +71,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="405dp"
-
-        android:layout_height="472dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

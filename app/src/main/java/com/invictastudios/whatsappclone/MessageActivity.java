@@ -1,19 +1,18 @@
 package com.invictastudios.whatsappclone;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.invictastudios.whatsappclone.Adapter.MessageAdapter;
 import com.invictastudios.whatsappclone.Model.Chat;
 import com.invictastudios.whatsappclone.Model.Users;
-import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,25 +60,17 @@ public class MessageActivity extends AppCompatActivity {
         msg_editText = findViewById(R.id.text_send);
 
         //RecyclerView
-        recyclerView=findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-/*
-        Toolbar toolbar = findViewById(R.id.toolbar3);
-        setSupportActionBar(toolbar);
+
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
 
-        });*/
 
         intent = getIntent();
         String userid = intent.getStringExtra("userid");
@@ -94,9 +84,9 @@ public class MessageActivity extends AppCompatActivity {
                 Users user = dataSnapshot.getValue(Users.class);
                 username.setText(user.getUsername());
 
-                if(user.getImageURL().equals("default")){
+                if (user.getImageURL().equals("default")) {
                     imageView.setImageResource(R.mipmap.ic_launcher);
-                }else{
+                } else {
                     Glide.with(MessageActivity.this)
                             .load(user.getImageURL())
                             .into(imageView);
@@ -113,9 +103,9 @@ public class MessageActivity extends AppCompatActivity {
 
         sendBtn.setOnClickListener(v -> {
             String msg = msg_editText.getText().toString();
-            if(!msg.equals("")){
-                sendMessage(fuser.getUid(),userid,msg);
-            }else{
+            if (!msg.equals("")) {
+                sendMessage(fuser.getUid(), userid, msg);
+            } else {
                 Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
             }
 
@@ -125,7 +115,7 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    private void sendMessage(String sender, String receiver, String message){
+    private void sendMessage(String sender, String receiver, String message) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -137,7 +127,7 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    private void readMessages(String myid, String userid, String imageurl){
+    private void readMessages(String myid, String userid, String imageurl) {
 
         mchat = new ArrayList<>();
 
@@ -146,12 +136,12 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mchat.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     Chat chat = snapshot.getValue(Chat.class);
 
                     if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
-                            || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
+                            || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
                         mchat.add(chat);
                     }
 
@@ -166,5 +156,14 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.ChatsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="WELCOME TO CHATS FRAGMENT"
+        android:text="Chat Fragment"
         android:textColor="@color/purple_700"
         android:textSize="30sp" />
 
