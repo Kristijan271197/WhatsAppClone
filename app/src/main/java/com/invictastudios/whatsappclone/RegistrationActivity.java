@@ -68,7 +68,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         hashMap.put("username", username);
                         hashMap.put("imageURL", "default");
 
-//Opening MainActivity after Success Registration
+                        //Opening MainActivity after Success Registration
                         myRef.setValue(hashMap).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
@@ -79,7 +79,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             }
                         }).addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
-                })
-                .addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

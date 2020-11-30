@@ -111,20 +111,16 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = msg_editText.getText().toString();
-                if(!msg.equals("")){
-                    sendMessage(fuser.getUid(),userid,msg);
-                }else{
-                    Toast.makeText(MessageActivity.this,
-                            "Please send a non empty msg", Toast.LENGTH_SHORT);
-                }
-
-                msg_editText.setText("");
-
+        sendBtn.setOnClickListener(v -> {
+            String msg = msg_editText.getText().toString();
+            if(!msg.equals("")){
+                sendMessage(fuser.getUid(),userid,msg);
+            }else{
+                Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
             }
+
+            msg_editText.setText("");
+
         });
 
     }
@@ -134,7 +130,7 @@ public class MessageActivity extends AppCompatActivity {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
-        hashMap.put("reciever", receiver);
+        hashMap.put("receiver", receiver);
         hashMap.put("message", message);
 
         reference.child("Chats").push().setValue(hashMap);
