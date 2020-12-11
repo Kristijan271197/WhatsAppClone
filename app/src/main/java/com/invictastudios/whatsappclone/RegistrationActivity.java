@@ -67,6 +67,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         hashMap.put("id", userId);
                         hashMap.put("username", username);
                         hashMap.put("imageURL", "default");
+                        hashMap.put("status", "offline");
 
                         //Opening MainActivity after Success Registration
                         myRef.setValue(hashMap).addOnCompleteListener(task1 -> {
