@@ -22,11 +22,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context context;
     private List<Users> mUsers;
+    private boolean isChat;
 
     //Constructor
-    public UserAdapter(Context context, List<Users> mUsers) {
+    public UserAdapter(Context context, List<Users> mUsers, boolean isChat) {
         this.context = context;
         this.mUsers = mUsers;
+        this.isChat = isChat;
     }
 
 
@@ -53,6 +55,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     .into(holder.imageView);
         }
 
+        //Status check
+        if (isChat){
+            if (users.getStatus().equals("online")){
+                holder.imageViewON.setVisibility(View.VISIBLE);
+                holder.imageViewOFF.setVisibility(View.GONE);
+            }else{
+                holder.imageViewON.setVisibility(View.GONE);
+                holder.imageViewOFF.setVisibility(View.VISIBLE);
+            }
+        }else{
+            holder.imageViewON.setVisibility(View.GONE);
+            holder.imageViewOFF.setVisibility(View.GONE);
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +92,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
         public ImageView imageView;
+        public ImageView imageViewON;
+        public ImageView imageViewOFF;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -83,7 +101,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
             username = itemView.findViewById(R.id.textView3);
             imageView = itemView.findViewById(R.id.imageView);
-
+            imageViewON = itemView.findViewById(R.id.statusImageON);
+            imageViewOFF = itemView.findViewById(R.id.statusImageOFF);
         }
     }
 

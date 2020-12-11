@@ -26,6 +26,7 @@ import com.invictastudios.whatsappclone.Fragments.UsersFragment;
 import com.invictastudios.whatsappclone.Model.Users;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser
+        myRef = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser
                 .getUid());
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
         viewPagerAdapter.addFragment(new UsersFragment(), "Users");
+        viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
 
         viewPager.setAdapter(viewPagerAdapter);
 
@@ -85,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                finish();
                 return true;
         }
         return false;
@@ -125,11 +127,25 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return titles.get(position);
         }
+
     }
 
+    private void CheckStatus(String status){
+        myRef = FirebaseDatabase.getInstance().getReference(path:"MyUsers").child(firebaseUser.getUid());
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+        myRef.updateChildren(hashMap);
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        CheckStatus("online");
+    }
 
-
-
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CheckStatus("offline");
+    }
 }

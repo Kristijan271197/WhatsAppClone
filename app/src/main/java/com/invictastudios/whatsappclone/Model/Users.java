@@ -5,6 +5,7 @@ public class Users {
     private String id;
     private String username;
     private String imageURL;
+    private String status;
 
 
     // Constructor;
@@ -12,10 +13,11 @@ public class Users {
     public Users() {
     }
 
-    public Users(String id, String username, String imageURL) {
+    public Users(String id, String username, String imageURL, String status) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
+        this.status = status;
     }
 
 
@@ -44,5 +46,13 @@ public class Users {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
