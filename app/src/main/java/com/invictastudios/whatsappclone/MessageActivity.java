@@ -119,16 +119,16 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void SeenMessage(String userid){
-        reference = FirebaseDatabase.getInstance().getReference(path:"Chats");
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
         seenListener = reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Chat chat = dataSnapshot.getValue(Chat.class);
                     if (chat.getReceiver().equals(fuser.getUid()) && chat.getSender().equals(userid)){
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
-                        snapshot.getRef().updateChildren(hashMap);
+                        dataSnapshot.getRef().updateChildren(hashMap);
                     }
                 }
             }
@@ -152,8 +152,8 @@ public class MessageActivity extends AppCompatActivity {
         reference.child("Chats").push().setValue(hashMap);
 
         //Adding User to chat fragment: Latest Chats with contacts
-        final DataBaseReference chatRef = FireBaseDatabase.getInstance()
-                .getReference(path: "ChatList")
+        final DatabaseReference chatRef = FirebaseDatabase.getInstance()
+                .getReference( "ChatList")
                 .child(fuser.getUid())
                 .child(userid);
 
@@ -213,7 +213,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void CheckStatus(String status){
-        reference = FirebaseDatabase.getInstance().getReference(path:"Users").child(fuser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(fuser.getUid());
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", status);
         reference.updateChildren(hashMap);

@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.invictastudios.whatsappclone.Fragments.ChatsFragment;
+import com.invictastudios.whatsappclone.Fragments.ProfileFragment;
 import com.invictastudios.whatsappclone.Fragments.UsersFragment;
 import com.invictastudios.whatsappclone.Model.Users;
 
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void CheckStatus(String status){
-        myRef = FirebaseDatabase.getInstance().getReference(path:"MyUsers").child(firebaseUser.getUid());
+        myRef = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser.getUid());
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", status);
         myRef.updateChildren(hashMap);
