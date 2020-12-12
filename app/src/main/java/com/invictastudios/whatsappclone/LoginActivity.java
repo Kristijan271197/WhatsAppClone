@@ -22,8 +22,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText userETLogin, passETLogin;
     Button loginBtn, RegisterBtn;
 
-    // Firebase:
-
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
 
