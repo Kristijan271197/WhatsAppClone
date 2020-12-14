@@ -20,8 +20,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
             android:layout_margin="16dp"
             android:elevation="10dp"
             app:cardCornerRadius="8dp"
@@ -30,8 +30,9 @@
 
             <ImageView
                 android:id="@+id/imageview_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
                 app:srcCompat="@mipmap/ic_launcher" />
 
         </androidx.cardview.widget.CardView>
@@ -41,12 +42,12 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginStart="16dp"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
             android:text="TextView"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/imageview_profile"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,9 +69,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:maxLength="1000"
             android:background="@android:color/transparent"
             android:hint="Type a message"
+            android:maxLength="1000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_send"
             app:layout_constraintStart_toStartOf="parent"

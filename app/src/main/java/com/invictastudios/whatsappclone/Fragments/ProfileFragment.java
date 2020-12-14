@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +33,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.invictastudios.whatsappclone.Model.Users;
 import com.invictastudios.whatsappclone.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -41,13 +41,13 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
-    TextView username;
-    ImageView imageView;
+    private TextView username;
+    private ImageView imageView;
 
-    DatabaseReference reference;
-    FirebaseUser fuser;
+    private DatabaseReference reference;
+    private FirebaseUser firebaseUser;
 
-    StorageReference storageReference;
+    private StorageReference storageReference;
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask<UploadTask.TaskSnapshot> uploadTask;
@@ -68,8 +68,8 @@ public class ProfileFragment extends Fragment {
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(fuser.getUid());
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment {
                 if (user.getImageURL().equals("default")) {
                     imageView.setImageResource(R.mipmap.ic_launcher);
                 } else {
-                    Glide.with(getContext()).load(user.getImageURL()).into(imageView);
+                    Picasso.get().load(user.getImageURL()).into(imageView);
                 }
             }
 
@@ -118,17 +118,17 @@ public class ProfileFragment extends Fragment {
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
             uploadTask = fileReference.putFile(imageUri);
 
-            uploadTask.continueWithTask((Continuation<UploadTask.TaskSnapshot, Task<Uri>>) task -> {
+            uploadTask.continueWithTask(task -> {
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }
                 return fileReference.getDownloadUrl();
-            }).addOnCompleteListener((OnCompleteListener<Uri>) task -> {
+            }).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     String mUri = downloadUri.toString();
                     reference = FirebaseDatabase.getInstance().getReference("MyUsers").
-                            child(fuser.getUid());
+                            child(firebaseUser.getUid());
 
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("imageURL", mUri);

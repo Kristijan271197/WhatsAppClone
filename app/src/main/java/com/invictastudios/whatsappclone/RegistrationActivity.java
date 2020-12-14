@@ -76,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
-                                Toast.makeText(RegistrationActivity.this, "I Finished", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegistrationActivity.this, "Finished", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
                     }

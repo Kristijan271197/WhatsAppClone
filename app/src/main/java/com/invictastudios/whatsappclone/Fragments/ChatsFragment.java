@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.invictastudios.whatsappclone.Adapter.UserAdapter;
-import com.invictastudios.whatsappclone.Model.Chatlist;
+import com.invictastudios.whatsappclone.Model.ChatList;
 import com.invictastudios.whatsappclone.Model.Users;
 import com.invictastudios.whatsappclone.R;
 
@@ -31,12 +31,11 @@ public class ChatsFragment extends Fragment {
     private UserAdapter userAdapter;
     private List<Users> mUsers;
 
-    FirebaseUser fuser;
-    DatabaseReference reference;
+    private DatabaseReference reference;
 
-    private List<Chatlist> usersList;
+    private List<ChatList> usersList;
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
 
     public ChatsFragment() {
@@ -53,11 +52,11 @@ public class ChatsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         usersList = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("ChatList").child(fuser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -65,7 +64,7 @@ public class ChatsFragment extends Fragment {
                 usersList.clear();
                 //Loop for all users
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Chatlist chatlist = snapshot.getValue(Chatlist.class);
+                    ChatList chatlist = snapshot.getValue(ChatList.class);
                     usersList.add(chatlist);
                 }
                 chatList();
@@ -91,13 +90,13 @@ public class ChatsFragment extends Fragment {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Users user = snapshot.getValue(Users.class);
-                    for (Chatlist chatlist : usersList) {
+                    for (ChatList chatlist : usersList) {
                         if (user.getId().equals(chatlist.getId())) {
                             mUsers.add(user);
                         }
                     }
                 }
-                userAdapter = new UserAdapter(getContext(), mUsers,true);
+                userAdapter = new UserAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
             }
 
