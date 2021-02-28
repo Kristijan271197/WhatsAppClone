@@ -67,7 +67,6 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -82,15 +81,18 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
-                username.setText(user.getUsername());
+                if (user != null) {
+                    username.setText(user.getUsername());
 
-                if (user.getImageURL().equals("default")) {
-                    imageView.setImageResource(R.mipmap.ic_launcher);
-                } else {
-                    Picasso.get().load(user.getImageURL()).into(imageView);
+                    if (user.getImageURL().equals("default")) {
+                        imageView.setImageResource(R.mipmap.ic_launcher);
+                    } else {
+                        Picasso.get().load(user.getImageURL()).into(imageView);
+                    }
+
+
+                    readMessages(firebaseUser.getUid(), userId, user.getImageURL());
                 }
-
-                readMessages(firebaseUser.getUid(), userId, user.getImageURL());
             }
 
             @Override
@@ -101,7 +103,7 @@ public class MessageActivity extends AppCompatActivity {
 
         sendBtn.setOnClickListener(v -> {
             String msg = msg_editText.getText().toString();
-            if (!msg.equals("")) {
+            if (checkMessage(msg)) {
                 sendMessage(firebaseUser.getUid(), userId, msg);
             } else {
                 Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
@@ -121,10 +123,12 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Chat chat = dataSnapshot.getValue(Chat.class);
-                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid)) {
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("isseen", true);
-                        dataSnapshot.getRef().updateChildren(hashMap);
+                    if (chat != null) {
+                        if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid)) {
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("isseen", true);
+                            dataSnapshot.getRef().updateChildren(hashMap);
+                        }
                     }
                 }
             }
@@ -146,6 +150,7 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("isseen", false);
 
         reference.child("Chats").push().setValue(hashMap);
+
 
         //Adding User to chat fragment: Latest Chats with contacts
         final DatabaseReference chatRef = FirebaseDatabase.getInstance()
@@ -181,12 +186,12 @@ public class MessageActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     Chat chat = snapshot.getValue(Chat.class);
-
-                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
-                            || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
-                        MessageActivity.this.chat.add(chat);
+                    if (chat != null) {
+                        if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
+                                || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
+                            MessageActivity.this.chat.add(chat);
+                        }
                     }
-
                     messageAdapter = new MessageAdapter(MessageActivity.this, MessageActivity.this.chat, imageurl);
                     recyclerView.setAdapter(messageAdapter);
 
@@ -227,6 +232,11 @@ public class MessageActivity extends AppCompatActivity {
         super.onPause();
         reference.removeEventListener(seenListener);
         CheckStatus("offline");
+    }
+
+    public boolean checkMessage(String message) {
+        return message != null && !message.equals("") && message.length() <= 500;
+
     }
 
 }

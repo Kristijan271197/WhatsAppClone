@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -24,6 +25,20 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private DatabaseReference myRef;
+
+    public static final Pattern EMAIL_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9+._%\\-]{1,256}" +
+                    "@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+"
+    );
+
+    public static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$");
+
+    public static final Pattern USERNAME_PATTERN = Pattern.compile("^[^\\\\<>/*&^%$#@!)(.,;'\"}{+=\\[\\]]*$");
 
 
     @Override
@@ -43,10 +58,25 @@ public class RegistrationActivity extends AppCompatActivity {
             String email_text = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
-            if (TextUtils.isEmpty(username_text) || TextUtils.isEmpty(email_text) || TextUtils.isEmpty(password))
-                Toast.makeText(this, "Please Fill All Fields", Toast.LENGTH_SHORT).show();
-            else
-                RegisterNow(username_text, email_text, password);
+            if (isValidEmail(username_text)) {
+                if(isValidPassword(password)) {
+                    if(isValidUsername(username_text)) {
+                        RegisterNow(username_text, email_text, password);
+                    } else
+                        Toast.makeText(RegistrationActivity.this, "Username must contain " +
+                                "only numbers and letters and must not be empty", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(RegistrationActivity.this, "Password must contain at least:\n" +
+                            "One Digit\n" +
+                            "One Uppercase letter\n" +
+                            "One Lowercase letter\n" +
+                            "Is minimum 8 characters\n" +
+                            "Must not contain special charracters", Toast.LENGTH_SHORT).show();
+
+
+
+            } else
+                Toast.makeText(RegistrationActivity.this, "Invalid Email Format", Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -81,5 +111,17 @@ public class RegistrationActivity extends AppCompatActivity {
                         }).addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 }).addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    public  boolean isValidEmail(CharSequence email) {
+        return email != null && EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    public boolean isValidPassword(CharSequence password) {
+        return password != null && PASSWORD_PATTERN.matcher(password).matches();
+    }
+
+    public boolean isValidUsername(CharSequence username) {
+        return username != null && USERNAME_PATTERN.matcher(username).matches() && username.length() >= 1;
     }
 }
