@@ -2,7 +2,6 @@ package com.invictastudios.whatsappclone;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -58,9 +57,9 @@ public class RegistrationActivity extends AppCompatActivity {
             String email_text = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
-            if (isValidEmail(username_text)) {
-                if(isValidPassword(password)) {
-                    if(isValidUsername(username_text)) {
+            if (isValidEmail(email_text)) {
+                if (isValidPassword(password)) {
+                    if (isValidUsername(username_text)) {
                         RegisterNow(username_text, email_text, password);
                     } else
                         Toast.makeText(RegistrationActivity.this, "Username must contain " +
@@ -72,7 +71,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             "One Lowercase letter\n" +
                             "Is minimum 8 characters\n" +
                             "Must not contain special charracters", Toast.LENGTH_SHORT).show();
-
 
 
             } else
@@ -93,11 +91,15 @@ public class RegistrationActivity extends AppCompatActivity {
                                     .getReference("MyUsers")
                                     .child(userId);
                         }
+
                         HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put("id", userId);
-                        hashMap.put("username", username);
-                        hashMap.put("imageURL", "default");
-                        hashMap.put("status", "offline");
+
+                        if (validateUserId(userId) && isValidUsername(username)) {
+                            hashMap.put("id", userId);
+                            hashMap.put("username", username);
+                            hashMap.put("imageURL", "default");
+                            hashMap.put("status", "offline");
+                        }
 
                         //Opening MainActivity after Success Registration
                         myRef.setValue(hashMap).addOnCompleteListener(task1 -> {
@@ -113,7 +115,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 }).addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    public  boolean isValidEmail(CharSequence email) {
+    public boolean isValidEmail(CharSequence email) {
         return email != null && EMAIL_PATTERN.matcher(email).matches();
     }
 
@@ -123,5 +125,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public boolean isValidUsername(CharSequence username) {
         return username != null && USERNAME_PATTERN.matcher(username).matches() && username.length() >= 1;
+    }
+
+    public boolean validateUserId(CharSequence userId) {
+        return userId != null && USERNAME_PATTERN.matcher(userId).matches() && userId.length() >= 1;
     }
 }

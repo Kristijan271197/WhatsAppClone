@@ -29,8 +29,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MessageActivity extends AppCompatActivity {
+
+    public static final Pattern USERNAME_PATTERN = Pattern.compile("^[^\\\\<>/*&^%$#@!)(.,;'\"}{+=\\[\\]]*$");
+    public static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 
     private TextView username;
     private ImageView imageView;
@@ -72,6 +76,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
+
         userId = intent.getStringExtra("userid");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -82,16 +87,18 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
                 if (user != null) {
-                    username.setText(user.getUsername());
+                    if (isValidUsername(user.getUsername()))
+                        username.setText(user.getUsername());
 
                     if (user.getImageURL().equals("default")) {
                         imageView.setImageResource(R.mipmap.ic_launcher);
                     } else {
-                        Picasso.get().load(user.getImageURL()).into(imageView);
+                        if (validateURL(user.getImageURL()))
+                            Picasso.get().load(user.getImageURL()).into(imageView);
                     }
 
-
-                    readMessages(firebaseUser.getUid(), userId, user.getImageURL());
+                    if (validateUserId(userId))
+                        readMessages(firebaseUser.getUid(), userId, user.getImageURL());
                 }
             }
 
@@ -124,10 +131,12 @@ public class MessageActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Chat chat = dataSnapshot.getValue(Chat.class);
                     if (chat != null) {
-                        if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid)) {
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("isseen", true);
-                            dataSnapshot.getRef().updateChildren(hashMap);
+                        if (validateUserId(userid)) {
+                            if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid)) {
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("isseen", true);
+                                dataSnapshot.getRef().updateChildren(hashMap);
+                            }
                         }
                     }
                 }
@@ -144,10 +153,12 @@ public class MessageActivity extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("sender", sender);
-        hashMap.put("receiver", receiver);
-        hashMap.put("message", message);
-        hashMap.put("isseen", false);
+        if (validateUserId(sender) && validateUserId(receiver) && checkMessage(message)) {
+            hashMap.put("sender", sender);
+            hashMap.put("receiver", receiver);
+            hashMap.put("message", message);
+            hashMap.put("isseen", false);
+        }
 
         reference.child("Chats").push().setValue(hashMap);
 
@@ -187,13 +198,18 @@ public class MessageActivity extends AppCompatActivity {
 
                     Chat chat = snapshot.getValue(Chat.class);
                     if (chat != null) {
-                        if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
-                                || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
-                            MessageActivity.this.chat.add(chat);
+                        if (validateUserId(myid) && validateUserId(userId)) {
+                            if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
+                                    || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
+                                MessageActivity.this.chat.add(chat);
+                            }
                         }
+
                     }
-                    messageAdapter = new MessageAdapter(MessageActivity.this, MessageActivity.this.chat, imageurl);
-                    recyclerView.setAdapter(messageAdapter);
+                    if (validateURL(imageurl)) {
+                        messageAdapter = new MessageAdapter(MessageActivity.this, MessageActivity.this.chat, imageurl);
+                        recyclerView.setAdapter(messageAdapter);
+                    }
 
                 }
             }
@@ -237,6 +253,18 @@ public class MessageActivity extends AppCompatActivity {
     public boolean checkMessage(String message) {
         return message != null && !message.equals("") && message.length() <= 500;
 
+    }
+
+    public boolean isValidUsername(CharSequence username) {
+        return username != null && USERNAME_PATTERN.matcher(username).matches() && username.length() >= 1;
+    }
+
+    public boolean validateUserId(CharSequence userId) {
+        return userId != null && USERNAME_PATTERN.matcher(userId).matches() && userId.length() >= 1;
+    }
+
+    public boolean validateURL(String url) {
+        return url != null && URL_PATTERN.matcher(url).matches();
     }
 
 }

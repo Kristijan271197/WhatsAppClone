@@ -108,4 +108,24 @@ public class RegistrationActivityUnitTest {
         assertFalse(registrationActivity.isValidUsername(null));
     }
 
+    @Test
+    public void userIdValidator_CorrectUserId_ReturnsTrue(){
+        assertTrue(registrationActivity.validateUserId("2mPa8YFCYTSyOKr1f4NupAo2A0M2"));
+    }
+
+    @Test
+    public void userIdValidator_NoSpecialCharacters_ReturnsFalse(){
+        assertFalse(registrationActivity.validateUserId("2mPa8YFCYTSyOKr1f4NupAo2A0M2@#$"));
+    }
+
+    @Test
+    public void userIdValidator_EmptyUserId_ReturnsFalse(){
+        assertFalse(registrationActivity.validateUserId(""));
+    }
+
+    @Test
+    public void userIdValidator_NonNullUserId_ReturnsFalse(){
+        assertFalse(registrationActivity.validateUserId(null));
+    }
+
 }
