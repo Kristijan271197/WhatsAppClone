@@ -12,9 +12,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.invictastudios.whatsappclone.Firebase.RegistrationTests;
 
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -24,20 +24,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private DatabaseReference myRef;
-
-    public static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "[a-zA-Z0-9+._%\\-]{1,256}" +
-                    "@" +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-                    "(" +
-                    "\\." +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-                    ")+"
-    );
-
-    public static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$");
-
-    public static final Pattern USERNAME_PATTERN = Pattern.compile("^[^\\\\<>/*&^%$#@!)(.,;'\"}{+=\\[\\]]*$");
+    private RegistrationTests registrationTests;
 
 
     @Override
@@ -49,6 +36,7 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password_edit_text);
         emailEditText = findViewById(R.id.email_edit_text);
         Button registrationButton = findViewById(R.id.registration_button);
+        registrationTests = new RegistrationTests();
 
         auth = FirebaseAuth.getInstance();
 
@@ -57,9 +45,9 @@ public class RegistrationActivity extends AppCompatActivity {
             String email_text = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
-            if (isValidEmail(email_text)) {
-                if (isValidPassword(password)) {
-                    if (isValidUsername(username_text)) {
+            if (registrationTests.isValidEmail(email_text)) {
+                if (registrationTests.isValidPassword(password)) {
+                    if (registrationTests.isValidUsername(username_text)) {
                         RegisterNow(username_text, email_text, password);
                     } else
                         Toast.makeText(RegistrationActivity.this, "Username must contain " +
@@ -71,8 +59,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             "One Lowercase letter\n" +
                             "Is minimum 8 characters\n" +
                             "Must not contain special charracters", Toast.LENGTH_SHORT).show();
-
-
             } else
                 Toast.makeText(RegistrationActivity.this, "Invalid Email Format", Toast.LENGTH_SHORT).show();
         });
@@ -93,13 +79,13 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
 
                         HashMap<String, String> hashMap = new HashMap<>();
-
-                        if (validateUserId(userId) && isValidUsername(username)) {
-                            hashMap.put("id", userId);
-                            hashMap.put("username", username);
-                            hashMap.put("imageURL", "default");
-                            hashMap.put("status", "offline");
-                        }
+                        registrationTests.validRegistrationInfo(userId, username, hashMap);
+//                        if (validateUserId(userId) && isValidUsername(username)) {
+//                            hashMap.put("id", userId);
+//                            hashMap.put("username", username);
+//                            hashMap.put("imageURL", "default");
+//                            hashMap.put("status", "offline");
+//                        }
 
                         //Opening MainActivity after Success Registration
                         myRef.setValue(hashMap).addOnCompleteListener(task1 -> {
@@ -115,19 +101,5 @@ public class RegistrationActivity extends AppCompatActivity {
                 }).addOnFailureListener(e -> Toast.makeText(RegistrationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    public boolean isValidEmail(CharSequence email) {
-        return email != null && EMAIL_PATTERN.matcher(email).matches();
-    }
 
-    public boolean isValidPassword(CharSequence password) {
-        return password != null && PASSWORD_PATTERN.matcher(password).matches();
-    }
-
-    public boolean isValidUsername(CharSequence username) {
-        return username != null && USERNAME_PATTERN.matcher(username).matches() && username.length() >= 1;
-    }
-
-    public boolean validateUserId(CharSequence userId) {
-        return userId != null && USERNAME_PATTERN.matcher(userId).matches() && userId.length() >= 1;
-    }
 }

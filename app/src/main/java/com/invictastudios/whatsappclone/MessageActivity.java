@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.invictastudios.whatsappclone.Adapter.MessageAdapter;
+import com.invictastudios.whatsappclone.Firebase.MessageTests;
 import com.invictastudios.whatsappclone.Model.Chat;
 import com.invictastudios.whatsappclone.Model.Users;
 import com.squareup.picasso.Picasso;
@@ -29,12 +30,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class MessageActivity extends AppCompatActivity {
 
-    public static final Pattern USERNAME_PATTERN = Pattern.compile("^[^\\\\<>/*&^%$#@!)(.,;'\"}{+=\\[\\]]*$");
-    public static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 
     private TextView username;
     private ImageView imageView;
@@ -46,10 +44,11 @@ public class MessageActivity extends AppCompatActivity {
     private DatabaseReference reference;
 
     private MessageAdapter messageAdapter;
-    private List<Chat> chat;
+    private List<Chat> chatList;
     private String userId;
 
     ValueEventListener seenListener;
+    private MessageTests messageTests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +61,7 @@ public class MessageActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         ImageButton sendBtn = findViewById(R.id.btn_send);
         msg_editText = findViewById(R.id.text_send);
+        messageTests = new MessageTests();
 
         //RecyclerView
         recyclerView = findViewById(R.id.recycler_view);
@@ -87,17 +87,16 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
                 if (user != null) {
-                    if (isValidUsername(user.getUsername()))
+                    if (messageTests.isValidUsername(user.getUsername()))
                         username.setText(user.getUsername());
 
                     if (user.getImageURL().equals("default")) {
                         imageView.setImageResource(R.mipmap.ic_launcher);
                     } else {
-                        if (validateURL(user.getImageURL()))
                             Picasso.get().load(user.getImageURL()).into(imageView);
                     }
 
-                    if (validateUserId(userId))
+                    if (messageTests.validateUserId(userId))
                         readMessages(firebaseUser.getUid(), userId, user.getImageURL());
                 }
             }
@@ -110,7 +109,7 @@ public class MessageActivity extends AppCompatActivity {
 
         sendBtn.setOnClickListener(v -> {
             String msg = msg_editText.getText().toString();
-            if (checkMessage(msg)) {
+            if (messageTests.checkMessage(msg)) {
                 sendMessage(firebaseUser.getUid(), userId, msg);
             } else {
                 Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
@@ -131,13 +130,7 @@ public class MessageActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Chat chat = dataSnapshot.getValue(Chat.class);
                     if (chat != null) {
-                        if (validateUserId(userid)) {
-                            if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid)) {
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("isseen", true);
-                                dataSnapshot.getRef().updateChildren(hashMap);
-                            }
-                        }
+                        messageTests.messageSeen(userid, firebaseUser, chat, dataSnapshot);
                     }
                 }
             }
@@ -153,12 +146,7 @@ public class MessageActivity extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        if (validateUserId(sender) && validateUserId(receiver) && checkMessage(message)) {
-            hashMap.put("sender", sender);
-            hashMap.put("receiver", receiver);
-            hashMap.put("message", message);
-            hashMap.put("isseen", false);
-        }
+        messageTests.sendMessageData(sender, receiver, message, hashMap);
 
         reference.child("Chats").push().setValue(hashMap);
 
@@ -187,29 +175,29 @@ public class MessageActivity extends AppCompatActivity {
 
     private void readMessages(String myid, String userid, String imageurl) {
 
-        chat = new ArrayList<>();
+        chatList = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                chat.clear();
+                chatList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     Chat chat = snapshot.getValue(Chat.class);
                     if (chat != null) {
-                        if (validateUserId(myid) && validateUserId(userId)) {
+                        if (messageTests.checkIds(myid, userid)) {
                             if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
                                     || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
-                                MessageActivity.this.chat.add(chat);
+                                chatList.add(chat);
                             }
                         }
 
                     }
-                    if (validateURL(imageurl)) {
-                        messageAdapter = new MessageAdapter(MessageActivity.this, MessageActivity.this.chat, imageurl);
-                        recyclerView.setAdapter(messageAdapter);
-                    }
+                    messageTests.readMessageData(myid, userid, chat, chatList);
+                    messageAdapter = new MessageAdapter(MessageActivity.this, MessageActivity.this.chatList, imageurl);
+                    recyclerView.setAdapter(messageAdapter);
+
 
                 }
             }
@@ -250,21 +238,5 @@ public class MessageActivity extends AppCompatActivity {
         CheckStatus("offline");
     }
 
-    public boolean checkMessage(String message) {
-        return message != null && !message.equals("") && message.length() <= 500;
-
-    }
-
-    public boolean isValidUsername(CharSequence username) {
-        return username != null && USERNAME_PATTERN.matcher(username).matches() && username.length() >= 1;
-    }
-
-    public boolean validateUserId(CharSequence userId) {
-        return userId != null && USERNAME_PATTERN.matcher(userId).matches() && userId.length() >= 1;
-    }
-
-    public boolean validateURL(String url) {
-        return url != null && URL_PATTERN.matcher(url).matches();
-    }
 
 }

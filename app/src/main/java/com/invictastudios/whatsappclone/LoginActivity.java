@@ -11,28 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.invictastudios.whatsappclone.Firebase.LoginTests;
 
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText userETLogin, passETLogin;
-
     private FirebaseAuth auth;
-
-    public static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-                    "\\@" +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-                    "(" +
-                    "\\." +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-                    ")+"
-    );
-
-
-
-
+    private LoginTests loginTests;
 
     @Override
     protected void onStart() {
@@ -57,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         passETLogin = findViewById(R.id.editText3);
         Button loginBtn = findViewById(R.id.buttonLogin);
         Button registerBtn = findViewById(R.id.registerBtn);
+        loginTests = new LoginTests();
 
         // Fire base Auth:
         auth = FirebaseAuth.getInstance();
@@ -74,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             String email_text = userETLogin.getText().toString();
             String pass_text = passETLogin.getText().toString();
 
-            if (isValidEmail(email_text)) {
+            if (loginTests.isValidEmail(email_text)) {
                 if (TextUtils.isEmpty(email_text) || TextUtils.isEmpty((pass_text))) {
                     Toast.makeText(LoginActivity.this, "Please fill the Fields", Toast.LENGTH_SHORT).show();
                 } else {
@@ -90,14 +78,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             });
                 }
-            } else
-                Toast.makeText(LoginActivity.this, "Invalid Email", Toast.LENGTH_SHORT).show();
+            }
         });
 
-    }
-
-    public boolean isValidEmail(CharSequence email) {
-        return email != null && EMAIL_PATTERN.matcher(email).matches();
     }
 
 
