@@ -1,5 +1,7 @@
 package com.invictastudios.whatsappclone;
 
+import com.invictastudios.whatsappclone.Firebase.LoginTests;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -8,40 +10,40 @@ import static org.junit.Assert.assertTrue;
 public class LoginActivityUnitTest {
 
 
-    LoginActivity loginActivity = new LoginActivity();
+    LoginTests loginTests = new LoginTests();
 
     @Test
     public void emailValidator_CorrectEmail_ReturnsTrue(){
-        assertTrue(loginActivity.isValidEmail("kristijanstojanoski@yahoo.com"));
+        assertTrue(loginTests.isValidEmail("kristijanstojanoski@yahoo.com"));
     }
 
     @Test
     public void emailValidator_CorrectEmailSubDomain_ReturnsTrue() {
-        assertTrue(loginActivity.isValidEmail("kristijanstojanoski@email.co.uk"));
+        assertTrue(loginTests.isValidEmail("kristijanstojanoski@email.co.uk"));
     }
 
     @Test
     public void emailValidator_InvalidEmailNoTld_ReturnsFalse() {
-        assertFalse(loginActivity.isValidEmail("name@email"));
+        assertFalse(loginTests.isValidEmail("name@email"));
     }
 
     @Test
     public void emailValidator_InvalidEmailDoubleDot_ReturnsFalse() {
-        assertFalse(loginActivity.isValidEmail("name@email..com"));
+        assertFalse(loginTests.isValidEmail("name@email..com"));
     }
 
     @Test
     public void emailValidator_InvalidEmailNoUsername_ReturnsFalse() {
-        assertFalse(loginActivity.isValidEmail("@email.com"));
+        assertFalse(loginTests.isValidEmail("@email.com"));
     }
 
     @Test
     public void emailValidator_EmptyEmail_ReturnsTrue(){
-        assertFalse(loginActivity.isValidEmail(""));
+        assertFalse(loginTests.isValidEmail(""));
     }
 
     @Test
     public void emailValidator_NonNullEmail_ReturnsTrue(){
-        assertFalse(loginActivity.isValidEmail(null));
+        assertFalse(loginTests.isValidEmail(null));
     }
 }

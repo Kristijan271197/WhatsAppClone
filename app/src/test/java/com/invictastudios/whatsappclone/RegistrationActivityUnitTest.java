@@ -1,131 +1,147 @@
 package com.invictastudios.whatsappclone;
 
+import com.invictastudios.whatsappclone.Firebase.RegistrationTests;
+
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
 public class RegistrationActivityUnitTest {
 
-    RegistrationActivity registrationActivity = new RegistrationActivity();
+    RegistrationTests registrationTests = new RegistrationTests();
 
     @Test
     public void emailValidator_CorrectEmail_ReturnsTrue(){
-        assertTrue(registrationActivity.isValidEmail("kristijanstojanoski@yahoo.com"));
+        assertTrue(registrationTests.isValidEmail("kristijanstojanoski@yahoo.com"));
     }
 
     @Test
     public void emailValidator_CorrectEmailSubDomain_ReturnsTrue() {
-        assertTrue(registrationActivity.isValidEmail("kristijanstojanoski@email.co.uk"));
+        assertTrue(registrationTests.isValidEmail("kristijanstojanoski@email.co.uk"));
     }
 
     @Test
     public void emailValidator_InvalidEmailNoTld_ReturnsFalse() {
-        assertFalse(registrationActivity.isValidEmail("name@email"));
+        assertFalse(registrationTests.isValidEmail("name@email"));
     }
 
     @Test
     public void emailValidator_InvalidEmailDoubleDot_ReturnsFalse() {
-        assertFalse(registrationActivity.isValidEmail("name@email..com"));
+        assertFalse(registrationTests.isValidEmail("name@email..com"));
     }
 
     @Test
     public void emailValidator_InvalidEmailNoUsername_ReturnsFalse() {
-        assertFalse(registrationActivity.isValidEmail("@email.com"));
+        assertFalse(registrationTests.isValidEmail("@email.com"));
     }
 
     @Test
     public void emailValidator_EmptyEmail_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidEmail(""));
+        assertFalse(registrationTests.isValidEmail(""));
     }
 
     @Test
     public void emailValidator_NonNullEmail_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidEmail(null));
+        assertFalse(registrationTests.isValidEmail(null));
     }
 
     @Test
     public void passwordValidator_CorrectPassword_ReturnsTrue(){
-        assertTrue(registrationActivity.isValidPassword("SomePassword1"));
+        assertTrue(registrationTests.isValidPassword("SomePassword1"));
     }
 
     @Test
     public void passwordValidator_NoDigits_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword("SomePassword"));
+        assertFalse(registrationTests.isValidPassword("SomePassword"));
     }
 
     @Test
     public void passwordValidator_NoLowercaseLetters_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword("SOMEPASSWORD1"));
+        assertFalse(registrationTests.isValidPassword("SOMEPASSWORD1"));
     }
 
     @Test
     public void passwordValidator_NoUppercaseLetters_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword("somepassword1"));
+        assertFalse(registrationTests.isValidPassword("somepassword1"));
     }
 
     @Test
     public void passwordValidator_ContainsSpecialCharacters_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword("SomePassword%$"));
+        assertFalse(registrationTests.isValidPassword("SomePassword%$"));
     }
 
     @Test
     public void passwordValidator_AtLeastEightCharacters_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword("SomeP1"));
+        assertFalse(registrationTests.isValidPassword("SomeP1"));
     }
 
     @Test
     public void passwordValidator_ContainsEmptySpace_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword("Some Password1"));
+        assertFalse(registrationTests.isValidPassword("Some Password1"));
     }
 
     @Test
     public void passwordValidator_EmptyPassword_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword(""));
+        assertFalse(registrationTests.isValidPassword(""));
     }
 
     @Test
     public void passwordValidator_NonNullPassword_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidPassword(null));
+        assertFalse(registrationTests.isValidPassword(null));
     }
 
     @Test
     public void usernameValidator_CorrectUsername_ReturnsTrue(){
-        assertTrue(registrationActivity.isValidUsername("SomeUsername1234"));
+        assertTrue(registrationTests.isValidUsername("SomeUsername1234"));
     }
 
     @Test
     public void usernameValidator_NoSpecialCharacters_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidUsername("SomeUsername@#$"));
+        assertFalse(registrationTests.isValidUsername("SomeUsername@#$"));
     }
 
     @Test
     public void usernameValidator_EmptyUsername_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidUsername(""));
+        assertFalse(registrationTests.isValidUsername(""));
     }
 
     @Test
     public void usernameValidator_NonNullUsername_ReturnsFalse(){
-        assertFalse(registrationActivity.isValidUsername(null));
+        assertFalse(registrationTests.isValidUsername(null));
     }
 
     @Test
     public void userIdValidator_CorrectUserId_ReturnsTrue(){
-        assertTrue(registrationActivity.validateUserId("2mPa8YFCYTSyOKr1f4NupAo2A0M2"));
+        assertTrue(registrationTests.validateUserId("2mPa8YFCYTSyOKr1f4NupAo2A0M2"));
     }
 
     @Test
     public void userIdValidator_NoSpecialCharacters_ReturnsFalse(){
-        assertFalse(registrationActivity.validateUserId("2mPa8YFCYTSyOKr1f4NupAo2A0M2@#$"));
+        assertFalse(registrationTests.validateUserId("2mPa8YFCYTSyOKr1f4NupAo2A0M2@#$"));
     }
 
     @Test
     public void userIdValidator_EmptyUserId_ReturnsFalse(){
-        assertFalse(registrationActivity.validateUserId(""));
+        assertFalse(registrationTests.validateUserId(""));
     }
 
     @Test
     public void userIdValidator_NonNullUserId_ReturnsFalse(){
-        assertFalse(registrationActivity.validateUserId(null));
+        assertFalse(registrationTests.validateUserId(null));
     }
+
+    @Test
+    public void userEmailPasswordValidator_CorrectCase_ReturnsTrue(){
+        assertTrue(registrationTests.isValidEmailPasswordUsername("Username","Password123","kristijanstojanoski@yahoo.com"));
+    }
+
+    @Test
+    public void correctRegistrationInfo_CorrectCase_ReturnsTrue(){
+        assertTrue(registrationTests.validRegistrationInfo("someUserId","someUsername", new HashMap<>()));
+    }
+
+
 
 }
