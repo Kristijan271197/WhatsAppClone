@@ -33,7 +33,6 @@ import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
 
-
     private TextView username;
     private ImageView imageView;
 
