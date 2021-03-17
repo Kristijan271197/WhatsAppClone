@@ -48,6 +48,7 @@ public class MessageActivity extends AppCompatActivity {
 
     ValueEventListener seenListener;
     private MessageTests messageTests;
+    int x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
