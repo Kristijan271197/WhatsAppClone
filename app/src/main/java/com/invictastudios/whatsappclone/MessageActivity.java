@@ -55,6 +55,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+
         //Widgets
         imageView = findViewById(R.id.imageview_profile);
         username = findViewById(R.id.username);
