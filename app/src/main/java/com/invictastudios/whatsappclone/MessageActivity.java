@@ -45,7 +45,6 @@ public class MessageActivity extends AppCompatActivity {
     private List<Chat> chat;
     private String userId;
 
-
     ValueEventListener seenListener;
 
     @Override
