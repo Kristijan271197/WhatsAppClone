@@ -33,6 +33,7 @@ public class UsersFragment extends Fragment {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private List<Users> mUsers;
+    FirebaseUser firebaseUser;
 
 
     public UsersFragment() {
@@ -48,6 +49,7 @@ public class UsersFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mUsers = new ArrayList<>();
         setHasOptionsMenu(true);
@@ -58,7 +60,7 @@ public class UsersFragment extends Fragment {
 
     private void ReadUsers() {
 
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("MyUsers");
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -71,9 +73,9 @@ public class UsersFragment extends Fragment {
                     Users user = snapshot.getValue(Users.class);
 
                     assert user != null;
-                    if (!user.getId().equals(firebaseUser.getUid())) {
-                        mUsers.add(user);
-                    }
+                        if (!user.getId().equals(firebaseUser.getUid())) {
+                            mUsers.add(user);
+                        }
                     userAdapter = new UserAdapter(getContext(), mUsers, false);
                     recyclerView.setAdapter(userAdapter);
                 }

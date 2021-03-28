@@ -48,7 +48,7 @@ public class MessageTests {
         return validateUserId(myId) && validateUserId(userId);
     }
     public boolean checkMessage(String message) {
-        return message != null && !message.equals("") && message.length() <= 500;
+        return message != null && !message.equals("") && message.length() <= 200;
     }
     public boolean isValidUsername(CharSequence username) {
         return username != null && USERNAME_PATTERN.matcher(username).matches() && username.length() >= 1;
