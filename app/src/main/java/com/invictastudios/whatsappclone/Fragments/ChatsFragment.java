@@ -33,6 +33,7 @@ public class ChatsFragment extends Fragment {
 
     private DatabaseReference reference;
 
+
     private List<ChatList> usersList;
 
     private RecyclerView recyclerView;
