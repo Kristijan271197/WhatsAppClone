@@ -80,12 +80,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
                         HashMap<String, String> hashMap = new HashMap<>();
                         registrationTests.validRegistrationInfo(userId, username, hashMap);
-//                        if (validateUserId(userId) && isValidUsername(username)) {
-//                            hashMap.put("id", userId);
-//                            hashMap.put("username", username);
-//                            hashMap.put("imageURL", "default");
-//                            hashMap.put("status", "offline");
-//                        }
 
                         //Opening MainActivity after Success Registration
                         myRef.setValue(hashMap).addOnCompleteListener(task1 -> {

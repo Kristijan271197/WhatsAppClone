@@ -92,7 +92,7 @@ public class MessageActivity extends AppCompatActivity {
                     if (user.getImageURL().equals("default")) {
                         imageView.setImageResource(R.mipmap.ic_launcher);
                     } else {
-                            Picasso.get().load(user.getImageURL()).into(imageView);
+                        Picasso.get().load(user.getImageURL()).into(imageView);
                     }
 
                     if (messageTests.validateUserId(userId))
@@ -108,11 +108,14 @@ public class MessageActivity extends AppCompatActivity {
 
         sendBtn.setOnClickListener(v -> {
             String msg = msg_editText.getText().toString();
-            if (messageTests.checkMessage(msg)) {
-                sendMessage(firebaseUser.getUid(), userId, msg);
-            } else {
-                Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
-            }
+
+            if (msg.length() <= 200) {
+                if (messageTests.checkMessage(msg))
+                    sendMessage(firebaseUser.getUid(), userId, msg);
+                else
+                    Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(MessageActivity.this, "Message too long", Toast.LENGTH_SHORT).show();
 
             msg_editText.setText("");
 
@@ -149,7 +152,6 @@ public class MessageActivity extends AppCompatActivity {
 
         reference.child("Chats").push().setValue(hashMap);
 
-
         //Adding User to chat fragment: Latest Chats with contacts
         final DatabaseReference chatRef = FirebaseDatabase.getInstance()
                 .getReference("ChatList")
@@ -184,15 +186,6 @@ public class MessageActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     Chat chat = snapshot.getValue(Chat.class);
-                    if (chat != null) {
-                        if (messageTests.checkIds(myid, userid)) {
-                            if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
-                                    || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
-                                chatList.add(chat);
-                            }
-                        }
-
-                    }
                     messageTests.readMessageData(myid, userid, chat, chatList);
                     messageAdapter = new MessageAdapter(MessageActivity.this, MessageActivity.this.chatList, imageurl);
                     recyclerView.setAdapter(messageAdapter);

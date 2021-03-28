@@ -13,8 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.invictastudios.whatsappclone.Firebase.LoginTests;
 
-import java.util.regex.Pattern;
-
 public class LoginActivity extends AppCompatActivity {
 
     private EditText userETLogin, passETLogin;
@@ -78,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             });
                 }
-            }
+            } else
+                Toast.makeText(LoginActivity.this, "Incorrect email", Toast.LENGTH_SHORT).show();
         });
 
     }
