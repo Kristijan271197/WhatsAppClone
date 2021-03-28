@@ -46,6 +46,7 @@ public class MessageActivity extends AppCompatActivity {
     private List<Chat> chatList;
     private String userId;
 
+
     ValueEventListener seenListener;
     private MessageTests messageTests;
 
