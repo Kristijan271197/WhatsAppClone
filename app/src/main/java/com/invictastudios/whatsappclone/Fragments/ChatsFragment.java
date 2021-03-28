@@ -37,7 +37,6 @@ public class ChatsFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
-
     public ChatsFragment() {
     }
 
