@@ -46,7 +46,6 @@ public class MessageActivity extends AppCompatActivity {
     private String userId;
 
     ValueEventListener seenListener;
-    int x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
