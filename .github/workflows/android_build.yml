@@ -31,7 +31,7 @@ jobs:
       runs-on: [macos-latests]
       steps:
         - uses: actions/checkout@v2
-          -
+
         - name: Run instrumentation tests
             uses: reactivecircus/android-emulator-runner@v2
             with:
