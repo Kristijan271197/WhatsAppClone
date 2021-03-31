@@ -81,7 +81,7 @@ public class RegisterActivityTest {
 
     @Test
     public void correctRegisterScreen() {
-        Espresso.onView(withId(R.id.username_edit_text)).perform(typeText("Kristijan2711"), closeSoftKeyboard());
+        Espresso.onView(withId(R.id.username_edit_text)).perform(typeText("Kristijan271197"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.password_edit_text)).perform(typeText("CorrectPassword1234"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.email_edit_text)).perform(typeText("kristijan_stojanoski@yahoo.com"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.registration_button)).perform(click());
