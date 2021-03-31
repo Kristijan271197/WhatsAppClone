@@ -19,6 +19,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private LoginTests loginTests;
 
+
+
     @Override
     protected void onStart() {
         super.onStart();

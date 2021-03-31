@@ -32,6 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Make gradlew executable
+          run: chmod +x ./gradlew
+
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
