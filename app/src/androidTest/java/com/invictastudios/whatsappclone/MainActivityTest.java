@@ -39,11 +39,11 @@ public class MainActivityTest {
 
     }
 
-    @Test
-    public void testSignOut() {
-        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        onView(anyOf(withText("Logout"), withId(R.id.logout))).perform(click());
-    }
+//    @Test
+//    public void testSignOut() {
+//        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
+//        onView(anyOf(withText("Logout"), withId(R.id.logout))).perform(click());
+//    }
 
 
 }
