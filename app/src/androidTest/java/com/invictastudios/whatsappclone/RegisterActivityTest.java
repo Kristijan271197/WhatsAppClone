@@ -23,74 +23,54 @@ public class RegisterActivityTest {
             = new ActivityScenarioRule<>(RegistrationActivity.class);
 
     @Test
-    public void wrongUsernameRegisterScreen() {
+    public void wrongUsernameRegisterScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.username_edit_text)).perform(typeText("Kristijan$$"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.password_edit_text)).perform(typeText("CorrectPassword1234"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.email_edit_text)).perform(typeText("kristijanstojanoski@yahoo.com"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.registration_button)).perform(click());
+        Thread.sleep(3000);
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void wrongPasswordRegisterScreen() {
+    public void wrongPasswordRegisterScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.username_edit_text)).perform(typeText("Kristijan2711"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.password_edit_text)).perform(typeText("123456"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.email_edit_text)).perform(typeText("kristijanstojanoski@yahoo.com"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.registration_button)).perform(click());
+        Thread.sleep(3000);
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 
     @Test
-    public void wrongEmailRegisterScreen() {
+    public void wrongEmailRegisterScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.username_edit_text)).perform(typeText("Kristijan2711"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.password_edit_text)).perform(typeText("CorrectPassword1234"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.email_edit_text)).perform(typeText("kristijanstojanoski@yahoo"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.registration_button)).perform(click());
+        Thread.sleep(3000);
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void emailInUseRegisterScreen() {
+    public void emailInUseRegisterScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.username_edit_text)).perform(typeText("Kristijan2711"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.password_edit_text)).perform(typeText("CorrectPassword1234"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.email_edit_text)).perform(typeText("kristijanstojanoski@yahoo.com"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.registration_button)).perform(click());
+        Thread.sleep(3000);
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
-    public void correctRegisterScreen() {
+    public void correctRegisterScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.username_edit_text)).perform(typeText("Kristijan271197"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.password_edit_text)).perform(typeText("CorrectPassword1234"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.email_edit_text)).perform(typeText("kristijan_stojanoski@yahoo.com"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.registration_button)).perform(click());
+        Thread.sleep(3000);
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 

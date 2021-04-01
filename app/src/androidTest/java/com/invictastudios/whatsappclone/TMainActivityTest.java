@@ -3,6 +3,7 @@ package com.invictastudios.whatsappclone;
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,34 +17,27 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anyOf;
 
-public class MainActivityTest {
+public class TMainActivityTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityScenarioRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void checkChatList() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+    public void checkChatList() throws InterruptedException {
+        Thread.sleep(2000);
         onView(withId(R.id.recycler_view2)).check(matches(isDisplayed()));
-
         onView(withId(R.id.recycler_view2))
                 .perform(actionOnItemAtPosition(0, click()));
-
         onView(withId(R.id.username)).check(matches(withText("krasla")));
 
     }
 
-//    @Test
-//    public void testSignOut() {
-//        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
-//        onView(anyOf(withText("Logout"), withId(R.id.logout))).perform(click());
-//    }
+    @Test
+    public void testSignOut() {
+        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        onView(anyOf(withText("Logout"), withId(R.id.logout))).perform(click());
+    }
 
 
 }

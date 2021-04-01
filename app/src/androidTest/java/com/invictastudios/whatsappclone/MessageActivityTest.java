@@ -33,56 +33,31 @@ public class MessageActivityTest {
             = new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void sendEmptyMessage() {
+    public void sendEmptyMessage() throws InterruptedException {
         Matcher<View> matcher = allOf(withText("USERS"),
                 isDescendantOfA(withId(R.id.tabLayout)));
         onView(matcher).perform(click());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        Thread.sleep(2000);
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
-
         onView(withId(R.id.recyclerView))
                 .perform(actionOnItemAtPosition(0, click()));
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        Thread.sleep(2000);
         onView(withId(R.id.btn_send)).perform(click());
     }
 
     @Test
-    public void sendCorrectMessage() {
+    public void sendCorrectMessage() throws InterruptedException {
 
         Matcher<View> matcher = allOf(withText("USERS"),
                 isDescendantOfA(withId(R.id.tabLayout)));
         onView(matcher).perform(click());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        Thread.sleep(2000);
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
-
         onView(withId(R.id.recyclerView))
                 .perform(actionOnItemAtPosition(0, click()));
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        Thread.sleep(2000);
         onView(withId(R.id.text_send)).perform(typeText("hello"), closeSoftKeyboard());
         onView(withId(R.id.btn_send)).perform(click());
-
         onView(withId(R.id.recycler_view))
                 .check(matches(hasDescendant(withText("hello"))));
 
@@ -90,28 +65,16 @@ public class MessageActivityTest {
 
 
     @Test
-    public void sendLongMessage() {
+    public void sendLongMessage() throws InterruptedException {
 
         Matcher<View> matcher = allOf(withText("USERS"),
                 isDescendantOfA(withId(R.id.tabLayout)));
         onView(matcher).perform(click());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        Thread.sleep(2000);
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
-
         onView(withId(R.id.recyclerView))
                 .perform(actionOnItemAtPosition(0, click()));
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        Thread.sleep(2000);
         onView(withId(R.id.text_send)).perform(typeText("HelloHelloHelloHelloHello" +
                 "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" +
                 "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello" +

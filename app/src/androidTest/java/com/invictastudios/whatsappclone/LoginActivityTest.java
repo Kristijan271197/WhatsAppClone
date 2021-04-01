@@ -4,6 +4,7 @@ import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,41 +27,29 @@ public class LoginActivityTest {
             = new ActivityScenarioRule<>(LoginActivity.class);
 
     @Test
-    public void wrongEmailLoginScreen() {
+    public void wrongEmailLoginScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.editText)).perform(typeText("kristijan.stojanoski@yahoo"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.editText3)).perform(typeText("somesomepassword"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.buttonLogin)).perform(click());
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(3000);
     }
 
     @Test
-    public void wrongPasswordLoginScreen() {
+    public void wrongPasswordLoginScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.editText)).perform(typeText("kristijan.stojanoski@yahoo.com"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.editText3)).perform(typeText("password"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.buttonLogin)).perform(click());
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(3000);
     }
 
     @Test
-    public void correctTestLoginScreen() {
+    public void correctTestLoginScreen() throws InterruptedException {
         Espresso.onView(withId(R.id.editText)).perform(typeText("kristijan-stojanoski@yahoo.com"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.editText3)).perform(typeText("Kikimiki123"), closeSoftKeyboard());
         Espresso.onView(withId(R.id.buttonLogin)).perform(click());
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        Thread.sleep(3000);
         onView(withId(R.id.recycler_view2)).check(matches(isDisplayed()));
+
     }
 
 
