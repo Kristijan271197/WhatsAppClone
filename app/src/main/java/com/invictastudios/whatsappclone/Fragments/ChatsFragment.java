@@ -80,7 +80,6 @@ public class ChatsFragment extends Fragment {
     }
 
     private void chatList() {
-        //Getting all recent chats
         mUsers = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("MyUsers");
         reference.addValueEventListener(new ValueEventListener() {

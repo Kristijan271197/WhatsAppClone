@@ -185,13 +185,10 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
                     Chat chat = snapshot.getValue(Chat.class);
                     messageTests.readMessageData(myid, userid, chat, chatList);
                     messageAdapter = new MessageAdapter(MessageActivity.this, MessageActivity.this.chatList, imageurl);
                     recyclerView.setAdapter(messageAdapter);
-
-
                 }
             }
 
