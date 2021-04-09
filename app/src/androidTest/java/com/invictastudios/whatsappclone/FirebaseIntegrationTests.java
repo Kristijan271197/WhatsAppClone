@@ -1,6 +1,8 @@
 package com.invictastudios.whatsappclone;
 
 import androidx.annotation.NonNull;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -14,14 +16,20 @@ import com.invictastudios.whatsappclone.Model.Chat;
 import com.invictastudios.whatsappclone.Model.ChatList;
 import com.invictastudios.whatsappclone.Model.Users;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.fail;
 
+@RunWith(AndroidJUnit4.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@LargeTest
 public class FirebaseIntegrationTests {
 
     @Test
-    public void firebaseAuthRegisterUserTest() throws InterruptedException {
+    public void AfirebaseAuthRegisterUserTest() throws InterruptedException {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword("someEmail@gmail.com", "somepassword123")
                 .addOnSuccessListener(authResult -> {
@@ -41,7 +49,7 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void firebaseAuthLoginUserTest() throws InterruptedException {
+    public void BfirebaseAuthLoginUserTest() throws InterruptedException {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signInWithEmailAndPassword("someEmail@gmail.com", "somepassword123")
                 .addOnSuccessListener(authResult -> {
@@ -60,7 +68,7 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void addUserToDatabaseTest() throws InterruptedException {
+    public void CaddUserToDatabaseTest() throws InterruptedException {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         Users user = new Users("abcdefgh123456789", "someUsername", "default", "status");
         database.child("MyUsers").child(user.getId()).setValue(user)
@@ -69,6 +77,7 @@ public class FirebaseIntegrationTests {
                             if (task.isSuccessful()) {
                                 System.out.println("addUserToDatabaseTest: User Successfully added to database: " + task.getResult().getValue());
                                 System.out.println("PASSED");
+                                database.child("MyUsers").child("abcdefgh123456789").removeValue();
                             }
                         })
                         .addOnFailureListener(e -> {
@@ -85,7 +94,7 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void getAllUsersTest() throws InterruptedException {
+    public void EgetAllUsersTest() throws InterruptedException {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("MyUsers");
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,7 +117,7 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void addMessageToDatabaseTest() throws InterruptedException {
+    public void FaddMessageToDatabaseTest() throws InterruptedException {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         Chat chat = new Chat("someSender", "someReceiver", "someMessage", false);
         database.child("Chats").push().setValue(chat)
@@ -125,7 +134,7 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void getMessagesWithUserId() throws InterruptedException {
+    public void GgetMessagesWithUserId() throws InterruptedException {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("Chats");
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -133,10 +142,13 @@ public class FirebaseIntegrationTests {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
                     if (chat != null)
-                        if (chat.getSender().equals("someSender"))
+                        if (chat.getSender().equals("someSender")) {
                             System.out.println("getMessagesWithUserId: Message Received: " + chat.getMessage());
+                            System.out.println("getMessagesWithUserId: PASSED");
+                            database.child(snapshot.getKey()).removeValue();
+                        }
                 }
-                System.out.println("getMessagesWithUserId: PASSED");
+
             }
 
             @Override
@@ -150,7 +162,7 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void addChatListToDatabaseTest() throws InterruptedException {
+    public void HaddChatListToDatabaseTest() throws InterruptedException {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("ChatList").child("someChild");
         ChatList chatList = new ChatList("someID");
         database.push().setValue(chatList)
@@ -167,17 +179,20 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void getChatListIDFromDatabaseTest() throws InterruptedException {
+    public void IgetChatListIDFromDatabaseTest() throws InterruptedException {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("ChatList").child("someChild");
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ChatList chatList = snapshot.getValue(ChatList.class);
-                    if (chatList != null)
+                    if (chatList != null) {
                         System.out.println("getChatListIDFromDatabaseTest: ID Received: " + chatList.getId());
+                        System.out.println("getChatListIDFromDatabaseTest: PASSED");
+                        database.removeValue();
+                    }
                 }
-                System.out.println("getChatListIDFromDatabaseTest: PASSED");
+
             }
 
             @Override
@@ -191,7 +206,7 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void addFileToStorageTest() throws InterruptedException {
+    public void JaddFileToStorageTest() throws InterruptedException {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("test");
         String data = "This is my data";
         storageReference.child("file.txt").putBytes(data.getBytes())
@@ -208,7 +223,7 @@ public class FirebaseIntegrationTests {
 
 
     @Test
-    public void getImageUrlFromStorageTest() throws InterruptedException {
+    public void KgetImageUrlFromStorageTest() throws InterruptedException {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("uploads").child("1607777014552.jpg");
         storageReference.getDownloadUrl()
                 .addOnSuccessListener(uri -> {
