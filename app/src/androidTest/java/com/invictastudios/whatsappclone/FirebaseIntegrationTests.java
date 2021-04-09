@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.invictastudios.whatsappclone.Model.Chat;
+import com.invictastudios.whatsappclone.Model.ChatList;
 import com.invictastudios.whatsappclone.Model.Users;
 
 import org.junit.Test;
@@ -147,6 +148,64 @@ public class FirebaseIntegrationTests {
         });
         Thread.sleep(3000);
     }
+
+    @Test
+    public void addChatListToDatabaseTest() throws InterruptedException {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("ChatList").child("someChild");
+        ChatList chatList = new ChatList("someID");
+        database.push().setValue(chatList)
+                .addOnSuccessListener(aVoid -> {
+                    System.out.println("addChatListToDatabaseTest: ChatList Successfully added to database");
+                    System.out.println("PASSED");
+                })
+                .addOnFailureListener(e -> {
+                    System.out.println("addChatListToDatabaseTest: Failed to add: " + e.getMessage());
+                    System.out.println("addChatListToDatabaseTest: FAILED");
+                    fail();
+                });
+        Thread.sleep(3000);
+    }
+
+    @Test
+    public void getChatListIDFromDatabaseTest() throws InterruptedException {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("ChatList").child("someChild");
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ChatList chatList = snapshot.getValue(ChatList.class);
+                    if (chatList != null)
+                        System.out.println("getChatListIDFromDatabaseTest: ID Received: " + chatList.getId());
+                }
+                System.out.println("getChatListIDFromDatabaseTest: PASSED");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("getChatListIDFromDatabaseTest: Error " + error.getMessage());
+                System.out.println("getChatListIDFromDatabaseTest: FAILED");
+                fail();
+            }
+        });
+        Thread.sleep(3000);
+    }
+
+    @Test
+    public void addFileToStorageTest() throws InterruptedException {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("test");
+        String data = "This is my data";
+        storageReference.child("file.txt").putBytes(data.getBytes())
+                .addOnSuccessListener(taskSnapshot -> {
+                    System.out.println("addFileToStorageTest: File uploaded successfully");
+                    System.out.println("addFileToStorageTest: PASSED");
+                })
+                .addOnFailureListener(e -> {
+                    System.out.println("addFileToStorageTest: ERROR: " + e.getMessage());
+                    System.out.println("addFileToStorageTest: FAIL");
+                });
+        Thread.sleep(3000);
+    }
+
 
     @Test
     public void getImageUrlFromStorageTest() throws InterruptedException {
