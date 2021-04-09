@@ -2,14 +2,14 @@ package com.invictastudios.whatsappclone;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.invictastudios.whatsappclone.Adapter.MessageAdapter;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.invictastudios.whatsappclone.Model.Chat;
 import com.invictastudios.whatsappclone.Model.Users;
 
@@ -18,7 +18,6 @@ import org.junit.Test;
 import static org.junit.Assert.fail;
 
 public class FirebaseIntegrationTests {
-
 
     @Test
     public void firebaseAuthRegisterUserTest() throws InterruptedException {
@@ -132,9 +131,9 @@ public class FirebaseIntegrationTests {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
-                    if(chat.getSender().equals("someSender")){
-                        System.out.println("getMessagesWithUserId: Message Received: " + chat.getMessage());
-                    }
+                    if (chat != null)
+                        if (chat.getSender().equals("someSender"))
+                            System.out.println("getMessagesWithUserId: Message Received: " + chat.getMessage());
                 }
                 System.out.println("getMessagesWithUserId: PASSED");
             }
@@ -150,8 +149,18 @@ public class FirebaseIntegrationTests {
     }
 
     @Test
-    public void someNewTest(){
+    public void getImageUrlFromStorageTest() throws InterruptedException {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("uploads").child("1607777014552.jpg");
+        storageReference.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    System.out.println("getImageUrlFromStorageTest: URL: " + uri.toString());
+                    System.out.println("getImageUrlFromStorageTest: PASSED");
+                })
+                .addOnFailureListener(e -> {
+                    System.out.println("getImageUrlFromStorageTest: ERROR: " + e.getMessage());
+                    System.out.println("getImageUrlFromStorageTest: FAIL");
+                });
 
+        Thread.sleep(3000);
     }
-
 }
