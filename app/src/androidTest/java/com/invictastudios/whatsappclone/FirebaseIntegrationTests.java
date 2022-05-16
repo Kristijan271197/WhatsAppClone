@@ -12,9 +12,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.invictastudios.whatsappclone.Model.Chat;
-import com.invictastudios.whatsappclone.Model.ChatList;
-import com.invictastudios.whatsappclone.Model.Users;
+import com.invictastudios.whatsappclone.model.Chat;
+import com.invictastudios.whatsappclone.model.ChatList;
+import com.invictastudios.whatsappclone.model.Users;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -33,6 +33,7 @@ public class FirebaseIntegrationTests {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword("someEmail@gmail.com", "somepassword123")
                 .addOnSuccessListener(authResult -> {
+                    assert authResult.getUser() != null;
                     System.out.println("firebaseAuthRegisterUserTest: User Registered");
                     System.out.println("firebaseAuthRegisterUserTest: User Id: " + authResult.getUser().getUid());
                     System.out.println("firebaseAuthRegisterUserTest: User Email: " + authResult.getUser().getEmail());
@@ -53,6 +54,7 @@ public class FirebaseIntegrationTests {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signInWithEmailAndPassword("someEmail@gmail.com", "somepassword123")
                 .addOnSuccessListener(authResult -> {
+                    assert authResult.getUser() != null;
                     System.out.println("firebaseAuthLoginUserTest: User Logged in");
                     System.out.println("firebaseAuthLoginUserTest: User Id: " + authResult.getUser().getUid());
                     System.out.println("firebaseAuthLoginUserTest: PASSED");
@@ -101,6 +103,7 @@ public class FirebaseIntegrationTests {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Users user = snapshot.getValue(Users.class);
+                    assert user != null;
                     System.out.println("getAllUsersTest: User: " + user.getUsername());
                 }
                 System.out.println("getAllUsersTest: PASSED");
@@ -145,10 +148,10 @@ public class FirebaseIntegrationTests {
                         if (chat.getSender().equals("someSender")) {
                             System.out.println("getMessagesWithUserId: Message Received: " + chat.getMessage());
                             System.out.println("getMessagesWithUserId: PASSED");
+                            assert snapshot.getKey() != null;
                             database.child(snapshot.getKey()).removeValue();
                         }
                 }
-
             }
 
             @Override

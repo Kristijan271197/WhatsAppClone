@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.invictastudios.whatsappclone.Firebase.LoginTests;
+import com.invictastudios.whatsappclone.firebase.LoginTests;
 
 public class LoginActivity extends AppCompatActivity {
 

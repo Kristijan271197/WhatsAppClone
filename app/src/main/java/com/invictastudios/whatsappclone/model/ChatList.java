@@ -1,4 +1,4 @@
-package com.invictastudios.whatsappclone.Model;
+package com.invictastudios.whatsappclone.model;
 
 public class ChatList {
 

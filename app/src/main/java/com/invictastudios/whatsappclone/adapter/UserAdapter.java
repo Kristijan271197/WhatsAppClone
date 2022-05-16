@@ -1,4 +1,4 @@
-package com.invictastudios.whatsappclone.Adapter;
+package com.invictastudios.whatsappclone.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.invictastudios.whatsappclone.MessageActivity;
-import com.invictastudios.whatsappclone.Model.Users;
 import com.invictastudios.whatsappclone.R;
+import com.invictastudios.whatsappclone.model.Users;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -117,17 +117,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             mUsers.clear();
-            mUsers.addAll((List) results.values);
-            notifyDataSetChanged();
+            mUsers.addAll((List<Users>) results.values);
+            notifyItemRangeChanged(0, mUsersFull.size());
         }
     };
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView username;
-        public ImageView imageView;
-        public ImageView imageViewON;
-        public ImageView imageViewOFF;
+        public final TextView username;
+        public final ImageView imageView;
+        public final ImageView imageViewON;
+        public final ImageView imageViewOFF;
 
 
         public ViewHolder(@NonNull View itemView) {

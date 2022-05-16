@@ -1,6 +1,6 @@
 package com.invictastudios.whatsappclone;
 
-import com.invictastudios.whatsappclone.Firebase.LoginTests;
+import com.invictastudios.whatsappclone.firebase.LoginTests;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class LoginActivityUnitTest {
 
 
-    LoginTests loginTests = new LoginTests();
+    final LoginTests loginTests = new LoginTests();
 
     @Test
     public void emailValidator_CorrectEmail_ReturnsTrue(){

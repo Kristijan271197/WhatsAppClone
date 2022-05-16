@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
-        android:text="TextView"
+        android:text="@string/textview"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/cardViewImage"
@@ -35,7 +35,8 @@
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"
+            android:contentDescription="@string/username" />
 
     </androidx.cardview.widget.CardView>
 
@@ -51,7 +52,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.653"
-        app:srcCompat="@drawable/gradient_register" />
+        app:srcCompat="@drawable/gradient_register"
+        android:contentDescription="@string/username" />
 
     <ImageView
         android:id="@+id/statusImageOFF"
@@ -63,5 +65,6 @@
         app:layout_constraintEnd_toStartOf="@+id/cardViewImage"
         app:layout_constraintHorizontal_bias="0.888"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/background_right" />
+        app:srcCompat="@drawable/background_right"
+        android:contentDescription="@string/username" />
 </androidx.constraintlayout.widget.ConstraintLayout>

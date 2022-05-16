@@ -21,10 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.invictastudios.whatsappclone.Fragments.ChatsFragment;
-import com.invictastudios.whatsappclone.Fragments.ProfileFragment;
-import com.invictastudios.whatsappclone.Fragments.UsersFragment;
-import com.invictastudios.whatsappclone.Model.Users;
+import com.invictastudios.whatsappclone.fragments.ChatsFragment;
+import com.invictastudios.whatsappclone.fragments.ProfileFragment;
+import com.invictastudios.whatsappclone.fragments.UsersFragment;
+import com.invictastudios.whatsappclone.model.Users;
 
 import java.util.ArrayList;
 import java.util.HashMap;

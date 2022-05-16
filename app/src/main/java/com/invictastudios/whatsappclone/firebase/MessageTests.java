@@ -1,8 +1,8 @@
-package com.invictastudios.whatsappclone.Firebase;
+package com.invictastudios.whatsappclone.firebase;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.invictastudios.whatsappclone.Model.Chat;
+import com.invictastudios.whatsappclone.model.Chat;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +21,12 @@ public class MessageTests {
             if (chat.getReceiver().equals(firebaseId) && chat.getSender().equals(userid)) {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("isseen", true);
+                System.out.println(hashMap);
             }
             return true;
         } else return false;
     }
+
     public boolean sendMessageData(String sender, String receiver, String message, HashMap<String, Object> hashMap) {
         if (validateUserId(sender) && validateUserId(receiver) && checkMessage(message)) {
             hashMap.put("sender", sender);
@@ -34,6 +36,7 @@ public class MessageTests {
             return true;
         } else return false;
     }
+
     public boolean readMessageData(String myid, String userid, Chat chat, List<Chat> listChat) {
         if (validateUserId(myid) && validateUserId(userid)) {
             if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)
@@ -44,15 +47,19 @@ public class MessageTests {
                 return false;
         } else return false;
     }
+
     public boolean checkIds(String myId, String userId) {
         return validateUserId(myId) && validateUserId(userId);
     }
+
     public boolean checkMessage(String message) {
         return message != null && !message.equals("") && message.length() <= 200;
     }
+
     public boolean isValidUsername(CharSequence username) {
         return username != null && USERNAME_PATTERN.matcher(username).matches() && username.length() >= 1;
     }
+
     public boolean validateUserId(CharSequence userId) {
         return userId != null && USERNAME_PATTERN.matcher(userId).matches() && userId.length() >= 1;
     }

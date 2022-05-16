@@ -1,4 +1,4 @@
-package com.invictastudios.whatsappclone.Adapter;
+package com.invictastudios.whatsappclone.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.invictastudios.whatsappclone.Model.Chat;
+import com.invictastudios.whatsappclone.model.Chat;
 import com.invictastudios.whatsappclone.R;
 import com.squareup.picasso.Picasso;
 
@@ -86,9 +86,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView show_message;
-        public ImageView profile_image;
-        public TextView txt_seen;
+        public final TextView show_message;
+        public final ImageView profile_image;
+        public final TextView txt_seen;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

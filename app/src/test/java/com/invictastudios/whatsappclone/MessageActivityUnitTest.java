@@ -1,7 +1,7 @@
 package com.invictastudios.whatsappclone;
 
-import com.invictastudios.whatsappclone.Firebase.MessageTests;
-import com.invictastudios.whatsappclone.Model.Chat;
+import com.invictastudios.whatsappclone.firebase.MessageTests;
+import com.invictastudios.whatsappclone.model.Chat;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 public class MessageActivityUnitTest {
 
-    MessageTests messageTest = new MessageTests();
+    final MessageTests messageTest = new MessageTests();
 
     @Test
     public void messageValidator_CorrectMessage_ReturnsTrue() {

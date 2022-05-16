@@ -3,7 +3,6 @@
     package="com.invictastudios.whatsappclone">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -17,7 +16,8 @@
         <activity android:name=".MessageActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

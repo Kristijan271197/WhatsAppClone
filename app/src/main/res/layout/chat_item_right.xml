@@ -16,13 +16,14 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:id="@+id/profile_image"
-           android:visibility="gone"/>
+           android:visibility="gone"
+           android:contentDescription="@string/username" />
 
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:background="@drawable/background_right"
-           android:text="Hello!"
+           android:text="@string/hello"
            android:layout_alignParentEnd="true"
            android:id="@+id/show_message"
            android:textSize="18sp"
@@ -37,6 +38,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayoutChatRight"
         android:layout_alignEnd="@+id/relativeLayoutChatRight"
-        android:text="TextView" />
+        android:text="@string/textview" />
 
 </RelativeLayout>

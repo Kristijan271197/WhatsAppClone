@@ -21,10 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.invictastudios.whatsappclone.Adapter.MessageAdapter;
-import com.invictastudios.whatsappclone.Firebase.MessageTests;
-import com.invictastudios.whatsappclone.Model.Chat;
-import com.invictastudios.whatsappclone.Model.Users;
+import com.invictastudios.whatsappclone.adapter.MessageAdapter;
+import com.invictastudios.whatsappclone.firebase.MessageTests;
+import com.invictastudios.whatsappclone.model.Chat;
+import com.invictastudios.whatsappclone.model.Users;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -71,6 +71,7 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        assert getSupportActionBar() != null;
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

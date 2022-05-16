@@ -1,4 +1,4 @@
-package com.invictastudios.whatsappclone.Firebase;
+package com.invictastudios.whatsappclone.firebase;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;

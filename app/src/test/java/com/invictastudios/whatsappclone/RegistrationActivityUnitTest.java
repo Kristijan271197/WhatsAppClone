@@ -1,6 +1,6 @@
 package com.invictastudios.whatsappclone;
 
-import com.invictastudios.whatsappclone.Firebase.RegistrationTests;
+import com.invictastudios.whatsappclone.firebase.RegistrationTests;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class RegistrationActivityUnitTest {
 
-    RegistrationTests registrationTests = new RegistrationTests();
+    final RegistrationTests registrationTests = new RegistrationTests();
 
     @Test
     public void emailValidator_CorrectEmail_ReturnsTrue(){
@@ -141,7 +141,4 @@ public class RegistrationActivityUnitTest {
     public void correctRegistrationInfo_CorrectCase_ReturnsTrue(){
         assertTrue(registrationTests.validRegistrationInfo("someUserId","someUsername", new HashMap<>()));
     }
-
-
-
 }

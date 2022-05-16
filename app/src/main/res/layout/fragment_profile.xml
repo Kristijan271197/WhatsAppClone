@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.ProfileFragment">
+    tools:context=".fragments.ProfileFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -30,7 +30,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/ic_launcher"
+                    android:contentDescription="@string/username" />
 
             </androidx.cardview.widget.CardView>
 
@@ -41,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="15dp"
-                android:text="username"
+                android:text="@string/username"
                 android:textColor="@color/purple_700"
                 android:textSize="18sp"
                 android:textStyle="bold"

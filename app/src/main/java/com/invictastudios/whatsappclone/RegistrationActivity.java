@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.invictastudios.whatsappclone.Firebase.RegistrationTests;
+import com.invictastudios.whatsappclone.firebase.RegistrationTests;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.invictastudios.whatsappclone.Fragments;
+package com.invictastudios.whatsappclone.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,9 +17,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.invictastudios.whatsappclone.Adapter.UserAdapter;
-import com.invictastudios.whatsappclone.Model.ChatList;
-import com.invictastudios.whatsappclone.Model.Users;
+import com.invictastudios.whatsappclone.adapter.UserAdapter;
+import com.invictastudios.whatsappclone.model.ChatList;
+import com.invictastudios.whatsappclone.model.Users;
 import com.invictastudios.whatsappclone.R;
 
 import java.util.ArrayList;
@@ -56,6 +56,7 @@ public class ChatsFragment extends Fragment {
 
         usersList = new ArrayList<>();
 
+        assert firebaseUser != null;
         reference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -90,6 +91,7 @@ public class ChatsFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Users user = snapshot.getValue(Users.class);
                     for (ChatList chatlist : usersList) {
+                        assert user != null;
                         if (user.getId().equals(chatlist.getId())) {
                             mUsers.add(user);
                         }

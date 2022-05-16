@@ -1,4 +1,4 @@
-package com.invictastudios.whatsappclone.Fragments;
+package com.invictastudios.whatsappclone.fragments;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -17,9 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +28,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.invictastudios.whatsappclone.Model.Users;
+import com.invictastudios.whatsappclone.model.Users;
 import com.invictastudios.whatsappclone.R;
 import com.squareup.picasso.Picasso;
 
@@ -74,6 +71,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Users user = snapshot.getValue(Users.class);
+                assert user != null;
                 username.setText(user.getUsername());
 
                 if (user.getImageURL().equals("default")) {
@@ -105,6 +103,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private String getFileExtension(Uri uri) {
+        assert getContext() != null;
         ContentResolver contentResolver = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
@@ -120,6 +119,7 @@ public class ProfileFragment extends Fragment {
 
             uploadTask.continueWithTask(task -> {
                 if (!task.isSuccessful()) {
+                    assert task.getException() != null;
                     throw task.getException();
                 }
                 return fileReference.getDownloadUrl();
